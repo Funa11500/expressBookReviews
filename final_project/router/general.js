@@ -25,56 +25,56 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  res.send(JSON.stringify(books, null, 5))
+public_users.get('/', async function (req, res) {
+  await res.send(JSON.stringify(books, null, 5))
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
+public_users.get('/isbn/:isbn', async function (req, res) {
   if(req.params.isbn>=1 && req.params.isbn<=10){
-    res.send(books[req.params.isbn])
+    await res.send(books[req.params.isbn])
   }
-  res.send('Book not Available')
+  await res.send('Book not Available')
 });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
+public_users.get('/author/:author', async function (req, res) {
   let author = req.params.author;
   if(author){
     for(let i=0; i<=9 ;i++){
       if(Object.values(books)[i].author ==  req.params.author){
-        res.send(books[i+1])
+        await res.send(books[i+1])
       }
     }
-    res.send('Author not Found!')
+    await res.send('Author not Found!')
   }
-  res.send("Author Not Provided!")
+  await res.send("Author Not Provided!")
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
+public_users.get('/title/:title', async function (req, res) {
   let title = req.params.title
   if(title){
     for(let i=0; i<=9 ;i++){
       if(Object.values(books)[i].title ==  req.params.title){
-        res.send(books[i+1])
+        await res.send(books[i+1])
       }
     }
-    res.send('Title not Found!')
+    await res.send('Title not Found!')
   }
-  res.send("Title Not Provided!")
+  await res.send("Title Not Provided!")
 });
 
 //  Get book review
-public_users.get('/review/:isbn',function (req, res) {
+public_users.get('/review/:isbn', async function (req, res) {
   let isbn = req.params.isbn
   if(isbn){
     if(isbn>=1 && isbn<=10){
-      res.send(books[isbn].reviews)
+      await res.send(books[isbn].reviews)
     }
-    res.send("ISBN Not Valid!")
+    await res.send("ISBN Not Valid!")
   }
-  res.send("ISBN Not Provided!")
+  await res.send("ISBN Not Provided!")
 });
 
 module.exports.general = public_users;

@@ -65,15 +65,36 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   }
 
   if(bookNum>=1 && bookNum<=10){
-    //COMPLETE LATER...
-    // books[bookNum].reviews
-    res.send(req.query.rev)
+    //A Valid Book
+    let user = req.session.authorization['username'];
+    let newReview = {'review': review};
+    books[bookNum].reviews[user] = newReview;
+    res.send('Review Added Succesfully!');
   }
   else{
-    restart.send('Please Provide a Valid ISBN Number')
+    res.send('Please Provide a Valid ISBN Number')
   }
 
 });
+
+// Delete a Book review
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  let bookNum = req.params.isbn;
+  if(!bookNum){
+    res.send('Please provide an ISBN number')
+  }
+  
+  if(bookNum>=1 && bookNum<=10){
+    //A Valid Book
+    let user = req.session.authorization['username'];
+    delete books[bookNum].reviews[user]
+    res.send('Review Deleted Succesfully!');
+  }
+  else{
+    res.send('Please Provide a Valid ISBN Number')
+  }
+})
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
